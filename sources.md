@@ -51,3 +51,27 @@ The CUDA Runtime API docs.
 
 * [CUDA Toolkit Docs](https://docs.nvidia.com/cuda/archive/8.0/)
 These are the docs for the CUDA Toolkit. 
+
+## OpenCL Research
+
+Book sources:
+
+* [OpenCL by Example](https://learning.oreilly.com/library/view/opencl-programming-by/9781849692342/)
+This is a lot like the *CUDA by Example* book, but for OpenCL.
+
+* [OpenCL Programming Guide](https://learning.oreilly.com/library/view/opencl-programming-guide/9780132488006/)
+This book contains a lot of information for writing OpenCL code. It also has 
+some "case studies" with example applications. This could be useful for 
+potential homework.
+
+* [OpenCL Specification](https://www.khronos.org/registry/OpenCL/specs/opencl-2.0.pdf)
+This is a very technical document that defines the OpenCL specification.
+
+* [OpenCL References](https://www.khronos.org/opencl/)
+This is the references put out by Khronos about OpenCL. There don't appear to 
+be easy docs, but there are some helfpul materials here.
+
+Note that OpenCL is a *standard*, it's not a *language*. So, OpenCL code has
+to be supported by a graphics card, and then you use their implementation for
+your code. So, if you, for example, wanted to use NVIDIA's OpenCL 
+implementation, you would still need a NVIDIA card. 

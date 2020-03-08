@@ -51,9 +51,13 @@ programmable GPU programs. (PMPP ch 2)
 - Give an overview of the GPU's architecture, and describe how this helps for 
 performance for specific applications. Also give a crash course on the 
 hardware concepts necessary to understand CUDA code later on. For example, it
-is necessary to understand how the GPU uses things like blocks, grids, and SMs
+is necessary to understand how the GPU uses things like blocks, grids, and warps
 to write correctly optimized code. These concepts are described well in PMPP 
-chapters 3 & 4. 
+chapters 3 & 4. You also need to be mindful of the performance effects of 
+using too many accesses to global memory. Since this is happening in a ton of
+threads, you have not be wary of going to global memory too much. (PMPP chp 5)
+Also give an overview of the differences between the traditional von Neumann
+CPU design and the GPU design. (PMPP ch 5) 
 
 - Introduce CUDA and OpenCL. This can be very brief, as it just shows that this
 is the tookits that people use to program on the GPU. Also introduce at the 

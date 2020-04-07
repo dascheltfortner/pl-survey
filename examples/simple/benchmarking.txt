@@ -1,0 +1,12 @@
+C++ program with 100M items:
+
+real	0m18.357s
+user	0m16.121s
+sys	0m2.236s
+
+
+CUDA program with 100M items:
+
+real	0m1.962s
+user	0m1.344s
+sys	0m0.618s

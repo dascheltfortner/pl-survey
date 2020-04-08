@@ -13,3 +13,25 @@ This example demonstrates the following principles:
     newer unified memory model.
 * Show performance differences between the two
 
+### Files
+
+###### **normal_vec-add.cpp**
+
+This file is the array addition example in normal C++. It is there for 
+comparison against the CUDA version.
+
+###### **cuda_vec-add.cu**
+
+This file is the array addition example using CUDA code. This example uses 
+the manual copying of memory using the `cudaMemcpy()` calls, with no usage
+of the unified memory.
+
+###### **cuda_vec-add-unified.cu**
+
+This is the array addition example in CUDA using the unified memory. 
+
+###### **benchmark.txt**
+
+This file shows the output of the Linux time command when run with 100M items.
+The benchmark was generated using the `normal_vec-add.cpp` program and the
+`cuda_vec-add-unified.cu` example.

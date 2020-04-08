@@ -53,15 +53,7 @@ int main(void)
     y[i] = 2.0f;
   }
 
-  // For older CUDA, you have to allocate 
-  // memory and then copy it over to the 
-  // device. This code shows how to do that.
-  // You can comment out lines 47 & 48
-  // to use this code.
-
-  
-
-  // Run kernel on 1M elements on the CPU
+  // Run kernel on N elements on the CPU
   add<<<1, 256>>>(N, x, y);
 
   // Wait for the GPU to finish before accessing the host

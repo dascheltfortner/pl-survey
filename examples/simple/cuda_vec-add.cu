@@ -18,34 +18,41 @@
 
             // Signifies a kernel function
 __global__  // Runs on device code
-void add(int n, float *x, float *y)
+void deviceAdd(int n, float *x, float *y)
 {
-  // Get the index for the thread that
-  // is running this kernel
-  int currentThread = threadIdx.x;
+  int index = blockDim.x * blockIdx.x + threadIdx.x;
 
-  // Get the size of a block
-  int blockSize = blockDim.x;
+  if(index < n) {
+    y[index] = x[index] + y[index];
+  }
+}
 
-  // Loop over each thread. You start with
-  // the current thread, and then jump
-  // by the size of a block. This means
-  // that each thread handles 1 / blockSize
-  // of the data.
-  for (int i = currentThread; i < n; i += blockSize)
-      y[i] = x[i] + y[i];
+void add(int n, float* h_x, float* h_y) {
+  int size = n * sizeof(float);
+  float *d_x, *d_y;
+  
+  // This allocates memory and copies 
+  // the memory from the host to the 
+  // device memory.
+  cudaMalloc((void **) &d_x, size);
+  cudaMemcpy(d_x, h_x, size, cudaMemcpyHostToDevice);
+  cudaMalloc((void **) &d_y, size);
+  cudaMemcpy(d_y, h_y, size, cudaMemcpyHostToDevice);
+
+  deviceAdd<<<ceil(n / 256.0), 256>>>(n, d_x, d_y);
+
+  cudaMemcpy(h_y, d_y, size, cudaMemcpyDeviceToHost);
+  
+  cudaFree(d_x);
+  cudaFree(d_y);
 }
 
 int main(void)
 {
   int N = 100<<20; // 100M elements
 
-  float *x, *y;
-
-  // Allocate memory using Unified memory. 
-  // Accessible either from the device or host.
-  cudaMallocManaged(&x, N * sizeof(float));
-  cudaMallocManaged(&y, N * sizeof(float));
+  float* x = (float*) malloc(N * sizeof(float));
+  float* y = (float*) malloc(N * sizeof(float));
 
   // initialize x and y arrays on the host
   for (int i = 0; i < N; i++) {
@@ -53,19 +60,8 @@ int main(void)
     y[i] = 2.0f;
   }
 
-  // For older CUDA, you have to allocate 
-  // memory and then copy it over to the 
-  // device. This code shows how to do that.
-  // You can comment out lines 47 & 48
-  // to use this code.
-
-  
-
   // Run kernel on 1M elements on the CPU
-  add<<<1, 256>>>(N, x, y);
-
-  // Wait for the GPU to finish before accessing the host
-  cudaDeviceSynchronize();
+  add(N, x, y);
 
   // Check for errors (all values should be 3.0f)
   float maxError = 0.0f;
@@ -73,9 +69,8 @@ int main(void)
     maxError = fmax(maxError, fabs(y[i]-3.0f));
   std::cout << "Max error: " << maxError << std::endl;
 
-  // Free the memory
-  cudaFree(x);
-  cudaFree(y);
+  free(x);
+  free(y);
 
   return 0;
 }

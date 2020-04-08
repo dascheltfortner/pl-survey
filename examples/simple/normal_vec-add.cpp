@@ -31,7 +31,7 @@ int main(void)
     y[i] = 2.0f;
   }
 
-  // Run kernel on 1M elements on the CPU
+  // Run kernel on N elements on the CPU
   add(N, x, y);
 
   // Check for errors (all values should be 3.0f)

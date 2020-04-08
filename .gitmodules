@@ -1,0 +1,6 @@
+[submodule "examples/image-blur/CImg"]
+	path = examples/image-blur/CImg
+	url = git@github.com:dtschump/CImg.git
+[submodule "examples/image-blur/stb"]
+	path = examples/image-blur/stb
+	url = git@github.com:nothings/stb.git

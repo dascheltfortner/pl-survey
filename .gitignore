@@ -1,2 +1,4 @@
 NVIDIA_CUDA-10.2_Samples/
 **/*.out
+**/*.swp
+!*.*

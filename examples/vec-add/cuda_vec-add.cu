@@ -18,33 +18,33 @@
 
             // Signifies a kernel function
 __global__  // Runs on device code
-void deviceAdd(int n, float *x, float *y)
+void deviceAdd(int n, float *dst, float *src)
 {
   int index = blockDim.x * blockIdx.x + threadIdx.x;
 
   if(index < n) {
-    y[index] = x[index] + y[index];
+    dst[index] = src[index] + dst[index];
   }
 }
 
-void add(int n, float* h_x, float* h_y) {
+void add(int n, float* h_dst, float* h_src) {
   int size = n * sizeof(float);
-  float *d_x, *d_y;
+  float *d_dst, *d_src;
   
   // This allocates memory and copies 
   // the memory from the host to the 
   // device memory.
-  cudaMalloc((void **) &d_x, size);
-  cudaMemcpy(d_x, h_x, size, cudaMemcpyHostToDevice);
-  cudaMalloc((void **) &d_y, size);
-  cudaMemcpy(d_y, h_y, size, cudaMemcpyHostToDevice);
+  cudaMalloc((void **) &d_src, size);
+  cudaMemcpy(d_src, h_src, size, cudaMemcpyHostToDevice);
+  cudaMalloc((void **) &d_dst, size);
+  cudaMemcpy(d_dst, h_dst, size, cudaMemcpyHostToDevice);
 
-  deviceAdd<<<ceil(n / 256.0), 256>>>(n, d_x, d_y);
+  deviceAdd<<<ceil(n / 256.0), 256>>>(n, d_dst, d_src);
 
-  cudaMemcpy(h_y, d_y, size, cudaMemcpyDeviceToHost);
+  cudaMemcpy(h_dst, d_dst, size, cudaMemcpyDeviceToHost);
   
-  cudaFree(d_x);
-  cudaFree(d_y);
+  cudaFree(d_src);
+  cudaFree(d_dst);
 }
 
 int main(void)

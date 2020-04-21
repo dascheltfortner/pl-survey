@@ -12,27 +12,27 @@
 #include <math.h>
 
 // function to add the elements of two arrays
-void add(int n, float *x, float *y)
+void add(int n, float *dst, float *src)
 {
   for (int i = 0; i < n; i++)
-      y[i] = x[i] + y[i];
+      dst[i] = src[i] + src[i];
 }
 
 int main(void)
 {
   int N = 100<<20; // 100M elements
 
-  float *x = new float[N];
-  float *y = new float[N];
+  float *src = new float[N];
+  float *dst = new float[N];
 
   // initialize x and y arrays on the host
   for (int i = 0; i < N; i++) {
-    x[i] = 1.0f;
-    y[i] = 2.0f;
+    src[i] = 1.0f;
+    dst[i] = 2.0f;
   }
 
   // Run kernel on N elements on the CPU
-  add(N, x, y);
+  add(N, dst, src);
 
   // Check for errors (all values should be 3.0f)
   float maxError = 0.0f;
@@ -41,8 +41,8 @@ int main(void)
   std::cout << "Max error: " << maxError << std::endl;
 
   // Free memory
-  delete [] x;
-  delete [] y;
+  delete [] src;
+  delete [] dst;
 
   return 0;
 }
